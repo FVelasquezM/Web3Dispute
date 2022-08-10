@@ -29,11 +29,6 @@ export const init = async () => {
 
     isInitialized = true;
 
-    window.ethereum.on('accountsChanged', function (accounts){
-      selectedAccount = accounts[0];
-      console.log(`Selected account changed to ${selectedAccount}`);
-    });
-
   }
   
 };

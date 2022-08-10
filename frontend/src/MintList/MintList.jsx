@@ -1,5 +1,5 @@
 import React from 'react';
-import {getTokenUrl} from '../Web3Client/Web3Client';
+import {getTokenUrl, sendTokenToContract} from '../Web3Client/Web3Client';
 import ListElement from './ListElement';
 
 class MintList extends React.Component {
@@ -23,8 +23,17 @@ class MintList extends React.Component {
         console.log(this.state.mintList);
     }
 
-    sendToDispute(){
-        console.log("TODO");
+    sendToDispute(event){
+        let promises = [];
+        for(let elem of this.state.mintList){
+            promises.push(sendTokenToContract(elem))
+        }
+        Promise.all(promises).then( (res) => {
+            console.log("Done sending to contract");
+            console.log(res);
+            this.setState({mintList: []});
+        });
+        event.preventDefault();
     }
 
 

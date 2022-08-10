@@ -5,6 +5,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract Dispute is Ownable, AccessControl, IERC721Receiver{ 
 
@@ -21,6 +22,8 @@ contract Dispute is Ownable, AccessControl, IERC721Receiver{
         uint evidenceSize;
     }
 
+    string state;
+
     //TODO, esto debería ser público?
     Party[] public parties;
 
@@ -36,6 +39,8 @@ contract Dispute is Ownable, AccessControl, IERC721Receiver{
         
         _createNewParty(_firstParty);
         _createNewParty(_secondParty);
+
+        state = 'OPEN';
     }
 
     function _createNewParty(address _add) private{
@@ -71,6 +76,14 @@ contract Dispute is Ownable, AccessControl, IERC721Receiver{
         return this.onERC721Received.selector;
     }
 
+    function getCurrentState() public view returns(string memory){
+        return state;
+    }
+
+    function getNumberOfElementsFromParty(uint party) public view returns(uint) {
+        return parties[party].evidenceSize;
+    }
+
     function getEvidenceFrom(uint party, uint evidenceIndex) public view returns(Evidence memory){
         return parties[party].evidence[evidenceIndex];
     }
@@ -80,6 +93,9 @@ contract Dispute is Ownable, AccessControl, IERC721Receiver{
         //TODO, sólo se debería resovler la disputa si las dos partes han puesto dinero en el contrato.
 
         disperseMoney(_amountFirstParty, _amountSecondParty);
+
+        state = 'CLOSED';
+
     }
 
     function disperseMoney(uint64 _amountFirstParty, uint64 _amountSecondParty) private onlyOwner {

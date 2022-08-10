@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import MintForm from './MintForm/MintForm';
 import MintList from './MintList/MintList';
+import DisputeList from './DisputeList/DisputeList';
+
 import { createStore } from 'redux';
 
 
@@ -29,6 +31,7 @@ function App() {
     <div className='App'>
       <MintForm updateMintedList={updateList}></MintForm>
       <MintList store = {store}></MintList>
+      <DisputeList></DisputeList>
     </div>
   );
 }
