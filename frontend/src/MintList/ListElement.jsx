@@ -20,7 +20,7 @@ class ListElement extends React.Component {
 
     render(){
         return (
-            <img src={this.state.src} alt="Loading image ..."/>
+            <img src={this.state.src} style={{width:"100%", "max-width": "200px",}} alt="Loading image ..."/>
         )
     }    
 

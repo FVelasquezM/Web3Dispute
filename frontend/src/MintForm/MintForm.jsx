@@ -1,6 +1,10 @@
 import React from 'react';
 import {createEvidence} from '../Web3Client/Web3Client'
-
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
 class MintForm extends React.Component {
     constructor(props) {
@@ -30,13 +34,26 @@ class MintForm extends React.Component {
   
     render() {
       return (
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            EvidenceUrl:
-            <input type="text" value={this.state.value} onChange={this.handleChange} />        
-          </label>
-          <input type="submit" value="Submit"/>
-        </form>
+        <Container fluid="md">
+          <Row>
+            <h3>Mint New Evidence: </h3>
+          </Row>
+          <Row>
+            <Col></Col>
+            <Col>
+              <Form>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>EvidenceUrl:</Form.Label>
+                <Form.Control placeholder="Enter a url" onChange={this.handleChange} value={this.state.value}/>
+              </Form.Group>
+              <Button variant="primary" type="submit" onClick={this.handleSubmit}>
+                Mint Evidence
+              </Button>
+              </Form>
+            </Col>
+            <Col></Col>
+          </Row>
+        </Container>
       );
     }
   }

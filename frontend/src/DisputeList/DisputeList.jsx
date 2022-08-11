@@ -2,6 +2,7 @@ import React from 'react';
 import {getNumberOfElementsInDispute, getEvidenceFrom, getTokenUrl, getDisputeState} from '../Web3Client/Web3Client';
 import ListElement from './ListElement';
 
+
 class DisputeList extends React.Component {
 
     partyNumber = 0; 
@@ -62,12 +63,10 @@ class DisputeList extends React.Component {
     render(){
         return (
             <div>
-                <h3>Evidence Submitted by you: </h3>
+                <h3>Evidence Submitted by you to the dispute: </h3>
                 {this.state.sentEvidence.map((x, i) =>
                 <ListElement key={i} loadFunction={getTokenUrl} args={[x]}></ListElement>
                 )}
-                <h4>Dispute State: {this.state.disputeState}</h4>
-
             </div>
         )
     }

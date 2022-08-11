@@ -113,7 +113,7 @@ contract Dispute is Ownable, AccessControl, IERC721Receiver{
     }
 
     // @notice Will receive any eth sent to the contract
-    function () external payable {
+    receive () external payable {
         
     }
 

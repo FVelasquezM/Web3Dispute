@@ -7,6 +7,7 @@ let evContract;
 let dContract;
 let networkId;
 let isInitialized = false;
+let web3
 
 export const init = async () => {
 
@@ -19,7 +20,7 @@ export const init = async () => {
     let accounts = await provider.request({method: 'eth_requestAccounts' })
     selectedAccount = accounts[0];
     console.log(accounts);
-    const web3 = new Web3(provider);
+    web3 = new Web3(provider);
     networkId = await web3.eth.net.getId();
     evContract = new web3.eth.Contract(evidenceContract.abi,evidenceContract.networks[networkId].address);
     dContract = new web3.eth.Contract(disputeContract.abi,disputeContract.networks[networkId].address);
@@ -28,11 +29,6 @@ export const init = async () => {
     console.log(evContract);
 
     isInitialized = true;
-
-    window.ethereum.on('accountsChanged', function (accounts){
-      selectedAccount = accounts[0];
-      console.log(`Selected account changed to ${selectedAccount}`);
-    });
 
   }
   
@@ -84,7 +80,7 @@ export const getNumberOfElementsInDispute = async (party) => {
   
   let numElements = await dContract.methods.getNumberOfElementsFromParty(party).call();
 
-  console.log("getNumberOfElementsInDispute RESPONSE");
+  console.log("getNumberOfElementsInDispute RESPONSE " + party);
   console.log(numElements);
 
   return numElements;
@@ -111,4 +107,20 @@ export const getDisputeState = async () => {
   }
 
   return await dContract.methods.getCurrentState().call();
+}
+
+export const getDisputeMoney = async () => {
+  if(!isInitialized){
+    await init();
+  }
+  
+  return web3.eth.getBalance(disputeContract.networks[networkId].address);
+}
+
+export const solveDispute = async (_amountFirstParty, _amountSecondParty) => {
+  if(!isInitialized){
+    await init();
+  }
+
+  await dContract.methods.solveDispute(_amountFirstParty, _amountSecondParty).send({from:selectedAccount});
 }

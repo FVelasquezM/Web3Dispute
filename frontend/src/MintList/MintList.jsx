@@ -1,6 +1,8 @@
 import React from 'react';
 import {getTokenUrl, sendTokenToContract} from '../Web3Client/Web3Client';
 import ListElement from './ListElement';
+import Button from 'react-bootstrap/Button';
+
 
 class MintList extends React.Component {
 
@@ -44,9 +46,9 @@ class MintList extends React.Component {
                 {this.state.mintList.map((x, i) =>
                 <ListElement key={i} loadFunction={getTokenUrl} args={[x]}></ListElement>
             )}
-            <form onSubmit={this.sendToDispute}>
-                <input type="submit" value="Send All Evidence to Dispute"/>
-            </form>
+            <Button variant="primary" type="submit" onClick={this.sendToDispute}>
+                Send Minted Evidence to Dispute
+            </Button>
             </div>
         )
     }

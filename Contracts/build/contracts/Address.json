@@ -3970,8 +3970,8 @@
     "version": "0.8.15+commit.e14f2714.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.4.8",
-  "updatedAt": "2022-08-09T18:11:00.919Z",
+  "schemaVersion": "3.4.9",
+  "updatedAt": "2022-08-11T15:58:03.068Z",
   "devdoc": {
     "details": "Collection of functions related to the address type",
     "kind": "dev",
