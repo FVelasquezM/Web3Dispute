@@ -2,7 +2,7 @@ const Evidence = artifacts.require("Evidence");
 const Dispute = artifacts.require("Dispute");
 
 let mainAcc = "0x5011689E78B58602d32294dB8aC840180389a079";
-let party2 = "0xc793654A8EA6b9e25264dA74bA6EDe87a3125950";
+let party2 = "0xc793654A8EA6b9e25264dA74bA6EDe87a3125950"; // (await web3.eth.getAccounts())[1]
 
 module.exports = async function (deployer) {
   deployer.deploy(Evidence);
@@ -10,14 +10,20 @@ module.exports = async function (deployer) {
 
   //Create Evidence token.
   let evidence = await Evidence.deployed();
-  let tokenId = (await evidence.createEvidence(party2, "https://previews.123rf.com/images/arcady31/arcady311108/arcady31110800017/10101139-sample-stamp.jpg")).logs[0].args.tokenId.toNumber();
+  let tokenId = (await evidence.createEvidence(party2, "https://previews.123rf.com/images/arcady31/arcady311108/arcady31110800017/10101139-sample-stamp.jpg"))
   console.log(tokenId);
+  tokenId = tokenId.logs[0].args.tokenId.toNumber();
+  console.log(tokenId)
 
 
   let dispute = await Dispute.deployed();
-  await evidence.safeTransferFrom(party2, dispute.address, tokenId, {from: (await web3.eth.getAccounts())[1]});
-
+  let response = await evidence.safeTransferFrom(party2, dispute.address, tokenId, {from: (await web3.eth.getAccounts())[1]});
+  console.log("SF RESPONSE");
+  console.log(response);
   console.log(await evidence.ownerOf(tokenId) == dispute.address);
 
-  console.log(await dispute.getEvidenceFrom(0,0));
+  console.log(await dispute.getEvidenceFrom(1,0));
+  console.log((await dispute.getNumberOfElementsFromParty(1)).toString());
+  console.log((await dispute.getNumberOfElementsFromParty(0)).toString());
+
 };

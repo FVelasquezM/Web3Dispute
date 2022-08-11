@@ -59,12 +59,13 @@ contract Dispute is Ownable, AccessControl, IERC721Receiver{
         //TODO Sólo debe permitir recibir el token si fue minteado por el mismo address que lo envía.
         require(hasRole(PARTY_ROLE, from), "Caller is not a party involved in the dispute");
         
-        //TODO, está bien que esto sea Memory?
         Party storage party;
         if(from == parties[0].add){
             party = parties[0];
+            require(hasRole(PARTY_ROLE, from), "Party 0");
         } else if(from == parties[1].add){
-            party = parties[0];
+            party = parties[1];
+            require(hasRole(PARTY_ROLE, from), "Party 1");
         } else {
             require(false, "Expected 'from' to be the address of the first or second party");
             return bytes4(0x0);
@@ -110,5 +111,11 @@ contract Dispute is Ownable, AccessControl, IERC721Receiver{
         parties[0].add.transfer(_amountFirstParty);
         parties[1].add.transfer(_amountSecondParty);
     }
+
+    // @notice Will receive any eth sent to the contract
+    function () external payable {
+        
+    }
+
 
 }
