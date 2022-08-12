@@ -122,5 +122,5 @@ export const solveDispute = async (_amountFirstParty, _amountSecondParty) => {
     await init();
   }
 
-  await dContract.methods.solveDispute(_amountFirstParty, _amountSecondParty).send({from:selectedAccount});
+  return await dContract.methods.solveDispute(_amountFirstParty, _amountSecondParty).send({from:selectedAccount});
 }

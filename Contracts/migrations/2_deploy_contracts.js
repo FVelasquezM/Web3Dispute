@@ -16,7 +16,7 @@ module.exports = async function (deployer) {
   // console.log(tokenId)
 
 
-  // let dispute = await Dispute.deployed();
+  let dispute = await Dispute.deployed();
   // let response = await evidence.safeTransferFrom(party2, dispute.address, tokenId, {from: (await web3.eth.getAccounts())[8]});
   // console.log("SF RESPONSE");
   // console.log(response);
@@ -25,5 +25,7 @@ module.exports = async function (deployer) {
   // console.log(await dispute.getEvidenceFrom(1,0));
   // console.log((await dispute.getNumberOfElementsFromParty(1)).toString());
   // console.log((await dispute.getNumberOfElementsFromParty(0)).toString());
+  let res = await dispute.send(web3.utils.toWei("1", "ether"));
+  console.log(res);
 
 };

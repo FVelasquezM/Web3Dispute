@@ -12,11 +12,12 @@ class DisputeState extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {disputeState: 'Loading Dispute State...', money: "Loading Money..."}
+        this.state = {disputeState: 'Loading Dispute State...', money: "Loading Money...", firstParty: 0, secondParty: 0}
         this.getCurrentDisputeState = this.getCurrentDisputeState.bind(this);
         this.getCurrentDisputeMoney = this.getCurrentDisputeMoney.bind(this);
         this.handleChangeFirst = this.handleChangeFirst.bind(this);
         this.handleChangeSecond = this.handleChangeSecond.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
     
     componentWillMount(){
@@ -36,14 +37,13 @@ class DisputeState extends React.Component {
 
     getCurrentDisputeMoney(){
         getDisputeMoney().then((money) => {
-            console.log(money);
-            this.state = {disputeState: this.state.disputeState, money: money}
+            this.setState({disputeState: this.state.disputeState, money: money, secondParty: this.state.secondParty, firstParty: this.state.firstParty,})
         })
     }
     
     getCurrentDisputeState(){
         getDisputeState().then((state) => {
-            this.setState({disputeState: state, money: this.state.money});
+            this.setState({disputeState: state, money: this.state.money, secondParty: this.state.secondParty, firstParty: this.state.firstParty,});
         });
     }
 
@@ -58,17 +58,25 @@ class DisputeState extends React.Component {
     }  
 
     handleChangeFirst(event) {
-        this.setState({firstParty: event.target.value});  
+        console.log(event);
+        this.setState({firstParty: event.target.value, secondParty: this.state.secondParty, disputeState: this.state.disputeState, money: this.state.money});  
     }
 
     handleChangeSecond(event) {
-        this.setState({secondParty: event.target.value});  
+        console.log(event.value);
+        this.setState({firstParty: this.state.firstParty, secondParty: event.target.value, disputeState: this.state.disputeState, money: this.state.money});  
     }
       
     handleSubmit(event) {
-        solveDispute(this.state.firstParty, this.state.secondParty)
-        this.setState({disputeState: this.state.disputeState, money: this.state.money});
         event.preventDefault();
+        console.log("On submit");
+        console.log(this.state.firstParty);
+        console.log(this.state.secondParty);
+        solveDispute(this.state.firstParty, this.state.secondParty).then((response) => {
+            console.log("Solved dispute, response: ");
+            console.log(response);
+            this.setState({disputeState: this.state.disputeState, money: this.state.money});
+        })
       }
 
     render(){
